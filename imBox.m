@@ -27,6 +27,7 @@ iMaxX = iX(iMaxY);
 threshold = double(noiseBI + maxInt/3);
 thresholdMean = double(noiseBI + sBI*3);
 factorInd = 1.7;
+limiteWhile = 20;
 
 %% determine box around the spot
 indh1 = find(X(iMaxY,1:iMaxX)>threshold,1,'first');
@@ -52,7 +53,8 @@ end
 % South side = X(indv2,indh1:indh2);
 % East side = X(indv1:indv2,indh2);
 test = 4;
-while test > 0
+iter = 0;
+while test > 0 && iter<limiteWhile
     test = 4;
     
     % Norht side:
@@ -60,7 +62,11 @@ while test > 0
     if meanN >= thresholdMean
         [~,indN] = max(X(indv1,indh1:indh2));
         indN = indN + indh1 -1;
+        indv1Prev = indv1;
         indv1 = find(X(1:indv1,indN)<threshold,1,'last');
+        if indv1 <= indv1Prev -1
+            test = test - 1;
+        end
     else 
         test = test - 1;
     end
@@ -71,7 +77,11 @@ while test > 0
     if meanW >= thresholdMean
         [~,indW] = max(X(indv1:indv2,indh1));
         indW = indW + indv1-1;
+        indh1Prev = indh1;
         indh1 = find(X(indW,1:indh1)<threshold,1,'last');
+        if indh1 <= indh1Prev -1
+            test = test -1;
+        end
     else 
         test = test - 1;
     end
@@ -81,7 +91,11 @@ while test > 0
     if meanS >= thresholdMean
         [~,indS] = max(X(indv2,indh1:indh2));
         indS = indS + indh1-1;
+        indv2Prev = indv2;
         indv2 = find(X(indv2:end,indS)<threshold,1,'first') + indv2;
+        if indv2 <= indv2Prev +1
+            test = test -1;
+        end
     else 
         test = test - 1;
     end
@@ -91,7 +105,11 @@ while test > 0
     if meanE >= thresholdMean 
         [~,indE] = max(X(indv1:indv2,indh2));
         indE = indE + indv1-1;
+        indh2Prev = indh2;
         indh2 = find(X(indE,indh2:end)<threshold,1,'first') + indh2;
+        if indh2 <= indh2Prev +1
+            test = test -1;
+        end
     else 
         test = test - 1;
     end
@@ -105,7 +123,7 @@ while test > 0
         axis ij 
         pause  
     end
-
+    iter = iter+1;
 end
 
 % enlargement
