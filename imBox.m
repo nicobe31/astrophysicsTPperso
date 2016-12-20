@@ -25,7 +25,7 @@ iMaxX = iX(iMaxY);
 
 % threshold for the spot detection and factor for the box enlargement
 threshold = double(noiseBI + maxInt/3);
-thresholdMean = double(noiseBI + sBI*3);
+thresholdMean = double(noiseBI + sBI*2.5);
 factorInd = 1.7;
 limiteWhile = 20;
 
