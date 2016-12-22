@@ -5,6 +5,7 @@ function [subImage] = imBox(name)
 % This function determine a sub-image around the spot light.
 % 
 % Argument: -name: string containing the name or the path to the image
+%            name= 'im/IMG_0001.CR2'
 % Output: Matrix corresponding to the sub-image
 %%
 
