@@ -2,11 +2,11 @@ function [subImage] = imBox(name)
 %%
 % [subregion] = imBox(name)
 %
-% This function determine a box around the spot light in the image
+% This function determine a sub-image around the spot light.
 % 
 % Argument: -name: string containing the name or the path to the image
-% Output: cell array of the form {rows,cols} of the Box
-%% 
+% Output: Matrix corresponding to the sub-image
+%%
 
 close all
 
