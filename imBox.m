@@ -1,4 +1,4 @@
-function [subregion] = imBox(name)
+function [subImage] = imBox(name)
 %%
 % [subregion] = imBox(name)
 %
@@ -127,10 +127,10 @@ while test > 0 && iter<limiteWhile
 end
 
 % enlargement
-indh1 = indh1 + floor((indh2-indh1)/2) - factorInd*(indh2-indh1)/2;
-indh2 = indh1 + floor((indh2-indh1)/2) + factorInd*(indh2-indh1)/2;
-indv1 = indv1 + floor((indv2-indv1)/2) - factorInd*(indv2-indv1)/2;
-indv2 = indv1 + floor((indv2-indv1)/2) + factorInd*(indv2-indv1)/2;
+indh1 = indh1 + floor((indh2-indh1)/2 - factorInd*(indh2-indh1)/2);
+indh2 = indh1 + floor((indh2-indh1)/2 + factorInd*(indh2-indh1)/2);
+indv1 = indv1 + floor((indv2-indv1)/2 - factorInd*(indv2-indv1)/2);
+indv2 = indv1 + floor((indv2-indv1)/2 + factorInd*(indv2-indv1)/2);
 
 
 %% plot
@@ -141,7 +141,7 @@ hold on
 image(X);
 plot(iMaxX,iMaxY,'or', 'MarkerSize', 5);
 plot(squareX,squareY,'-o', 'MarkerEdgeColor','c','MarkerSize',7)
-axis ij
+% axis ij
 legend('Max','Box');
 hold off
 
@@ -172,7 +172,8 @@ while ~strcmpi(ok,'y')
         figOwnBox = figure('Name','OwnBoxConstruction');
     end
     figure(figOwnBox)
-    image(MM);
+    MM2 = imread(name,'PixelRegion',{[1 indv2], [1 indh2]});
+    image(MM2);
     
     ok = input(promp,'s');
     
@@ -185,7 +186,8 @@ end
 
 %% Subregion definition
 
-subregion = {[indv1,indv2], [indh1,indh2]};
+% subregion = {[indv1,indv2], [indh1,indh2]};
+subImage = X(indv1:indv2, indh1:indh2,:);
 
 end
 
