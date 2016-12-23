@@ -1,12 +1,13 @@
-function [subregion] = imBox(name)
+function [subImage] = imBox(name)
 %%
 % [subregion] = imBox(name)
 %
-% This function determine a box around the spot light in the image
+% This function determine a sub-image around the spot light.
 % 
 % Argument: -name: string containing the name or the path to the image
-% Output: cell array of the form {rows,cols} of the Box
-%% 
+%            name= 'im/IMG_0001.CR2'
+% Output: Matrix corresponding to the sub-image
+%%
 
 close all
 
@@ -25,7 +26,7 @@ iMaxX = iX(iMaxY);
 
 % threshold for the spot detection and factor for the box enlargement
 threshold = double(noiseBI + maxInt/3);
-thresholdMean = double(noiseBI + sBI*3);
+thresholdMean = double(noiseBI + sBI*2.5);
 factorInd = 1.7;
 limiteWhile = 20;
 
@@ -127,10 +128,10 @@ while test > 0 && iter<limiteWhile
 end
 
 % enlargement
-indh1 = indh1 + floor((indh2-indh1)/2) - factorInd*(indh2-indh1)/2;
-indh2 = indh1 + floor((indh2-indh1)/2) + factorInd*(indh2-indh1)/2;
-indv1 = indv1 + floor((indv2-indv1)/2) - factorInd*(indv2-indv1)/2;
-indv2 = indv1 + floor((indv2-indv1)/2) + factorInd*(indv2-indv1)/2;
+indh1 = indh1 + floor((indh2-indh1)/2 - factorInd*(indh2-indh1)/2);
+indh2 = indh1 + floor((indh2-indh1)/2 + factorInd*(indh2-indh1)/2);
+indv1 = indv1 + floor((indv2-indv1)/2 - factorInd*(indv2-indv1)/2);
+indv2 = indv1 + floor((indv2-indv1)/2 + factorInd*(indv2-indv1)/2);
 
 
 %% plot
@@ -141,7 +142,7 @@ hold on
 image(X);
 plot(iMaxX,iMaxY,'or', 'MarkerSize', 5);
 plot(squareX,squareY,'-o', 'MarkerEdgeColor','c','MarkerSize',7)
-axis ij
+% axis ij
 legend('Max','Box');
 hold off
 
@@ -185,7 +186,8 @@ end
 
 %% Subregion definition
 
-subregion = {[indv1,indv2], [indh1,indh2]};
+% subregion = {[indv1,indv2], [indh1,indh2]};
+subImage = X(indv1:indv2, indh1:indh2,:);
 
 end
 
