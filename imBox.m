@@ -173,8 +173,7 @@ while ~strcmpi(ok,'y')
         figOwnBox = figure('Name','OwnBoxConstruction');
     end
     figure(figOwnBox)
-    MM2 = imread(name,'PixelRegion',{[1 indv2], [1 indh2]});
-    image(MM2);
+    image(MM);
     
     ok = input(promp,'s');
     
