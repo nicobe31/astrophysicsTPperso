@@ -112,10 +112,48 @@ while length(pksdone)<nPks % loop on the fringes
         pksdoneInd = pksdoneInd+nbrePt;
     end
     
+    iCheck = 1;
+    while iCheck < grpInd  % check after missing point
+        % distance to other points
+        dx = x - x(grp(iCheck));
+        dy = y - y(grp(iCheck));
+        ds = dx.^2 + dy.^2;
+        ds(pksdone) = []; %remove pt already in fringes and current pt
+        
+        % indices corresponding to the distances
+        pksSearch = pksInd;
+        pksSearch(pksdone) = [];
+        
+        % search the close pt
+        [j] = find(ds<radius);
+        
+        % save the point 
+        nbrePt = length(j);
+        grp(grpInd:grpInd+nbrePt-1,1) = pksSearch(j);
+        
+        if displayConstruction
+            figure(figConstru);
+            plot3(x(grp(iCheck)),y(grp(iCheck)),pks(grp(iCheck)),'mx')
+            plot3(x(grp),y(grp),pks(grp),'oc');
+            legend('Centeral pt','Pt in fringes')
+            pause
+        end
+
+        % update
+        pksdone(pksdoneInd:pksdoneInd+nbrePt-1,1) = pksSearch(j);
+        grpInd = grpInd+nbrePt;
+        pksdoneInd = pksdoneInd+nbrePt;
+     
+        iCheck = iCheck+1;
+    end
+    
     % save the followed fringe in a variable
     Grp{grpNbre} = grp;
     grpNbre = grpNbre +1;
 end
+
+s = sprintf('%i fringes',grpNbre-1);
+disp(s);
 
 % display of the grouped fringes
 sym = ['or','og','om','oc','ok','ob'];
